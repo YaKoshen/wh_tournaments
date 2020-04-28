@@ -1,0 +1,5 @@
+DB_NAME = 'wht'
+DB_USER = 'wht_django'
+DB_PASSWORD = '12345678'
+DB_HOST = '127.0.0.1'
+DB_PORT = '5432'
