@@ -10,5 +10,7 @@ urlpatterns = [
     path('', views.index),
     path('admin/', admin.site.urls),
     path('tournament/<str:tournament_id>', views.tournament),
-    path('tournaments/', views.tournaments_list)
+    path('tournaments/', views.tournaments_list),
+    path('player/<str:nick>', views.player),
+    path('players/', views.players_list)
 ]

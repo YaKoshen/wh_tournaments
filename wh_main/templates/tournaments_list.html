@@ -17,7 +17,7 @@
         <tbody>
             {% for tour in tournaments %}
             <tr>
-                <td>{{ tour.date }}</th>
+                <td>{{ tour.date }}</td>
                 <td><a href='/tournament/{{ tour.id }}'>{{ tour.name }}</a></td>
                 <td>{{ tour.points }}</td>
                 <td><a href={{ tour.link }}>{{ tour.link }}</a></td>

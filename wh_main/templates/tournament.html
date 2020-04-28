@@ -2,7 +2,7 @@
 
 {% block title %} WH Tournaments {% endblock %}
 
-{% block content_title %} {{ tournament.name }} {% endblock %}
+{% block content_title %} {{ tournament.name }} ({{ tournament.date }}){% endblock %}
 
 {% block content %}
 
@@ -15,23 +15,42 @@
             <a class="nav-link" id="tour-{{ value }}-tab" data-toggle="tab" href="#tour-{{ value }}" role="tab" aria-controls="tour-{{ value }}" aria-selected="false">Тур {{ value }}</a>
         </li>
         {% endfor %}
+        <li class="nav-item">
+            <a class="nav-link" id="results-tab" data-toggle="tab" href="#results" role="tab" aria-controls="results" aria-selected="true">Итоги</a>
+        </li>
     </ul>
 
     <div class="tab-content">
         <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
-            <div class="players-list">
-                <ul class="list-group">
-                    {% for player in tournament.players.all %}
-                        <li class="list-group-item">[{{ player.raiting }}] {{ player.nick }}</li>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Место</th>
+                        <th scope="col">Ник</th>
+                        <th scope="col">Рэйтинг</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in players %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td><a href='/player/{{ player.nick }}'>{{ player.nick }}</a></td>
+                        <td>{{ player.raiting }}</td>
+                    </tr>
                     {% endfor %}
-                </ul>
-            </div>
+                </tbody>
+            </table>
         </div>
+
         {% for value in tours %}
         <div class="tab-pane" id="tour-{{ value }}" role="tabpanel" aria-labelledby="tour-{{ value }}-tab">
-            Тур {{ value }}
+            <button id="create-paring-{{ value }}" type="button" class="btn btn-outline-primary">Создать паринг</button>
         </div>
         {% endfor %}
+
+        <div class="tab-pane" id="results" role="tabpanel" aria-labelledby="results-tab">
+            Итоги
+        </div>
     </div>
 
 {% endblock %}
@@ -40,6 +59,10 @@
 <script>
     $(function () {
         $('#myTab li:last-child a').tab('show')
+    })
+
+    $(document).ready(function() {
+       $('#home-tab').click()
     })
 </script>
 {% endblock %}

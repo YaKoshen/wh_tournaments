@@ -1,0 +1,14 @@
+{% extends 'main.html' %}
+
+{% block title %} WH Tournaments {% endblock %}
+
+{% block content_title %} {{ player.nick }} {% endblock %}
+
+{% block content %}
+    <p>{{ player.first_name }} {{ player.last_name }}</p>
+    <p> <b>Рэйтинг:</b> {{ player.raiting }} </p>
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

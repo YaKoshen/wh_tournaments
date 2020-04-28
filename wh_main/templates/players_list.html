@@ -1,0 +1,30 @@
+{% extends 'main.html' %}
+
+{% block title %} WH Tournaments {% endblock %}
+
+{% block content_title %} Топ игроков {% endblock %}
+
+{% block content %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Место</th>
+                <th scope="col">Ник</th>
+                <th scope="col">Рэйтинг</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for player in players %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td><a href='/player/{{ player.nick }}'>{{ player.nick }}</a></td>
+                <td>{{ player.raiting }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

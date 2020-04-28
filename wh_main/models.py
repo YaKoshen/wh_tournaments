@@ -8,9 +8,6 @@ class ParingList:
         self.players = players
         pass
 
-
-
-
 class Player(models.Model):
     nick = models.CharField(max_length=125, unique=True)
 
@@ -21,6 +18,8 @@ class Player(models.Model):
 
     create_time = models.DateTimeField(auto_now=True, editable=False)
     baned = models.BooleanField(default=False)
+
+    link = models.CharField(max_length=500)
 
     def __str__(self):
         return self.nick
@@ -56,7 +55,5 @@ class Tournament(models.Model):
     def get_first_parings(self):
         for player in self.players.order_by('-raiting').all():
             print(player, player.raiting)
-
-
 
         return None
