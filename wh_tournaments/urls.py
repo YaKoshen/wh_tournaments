@@ -9,4 +9,6 @@ from wh_main import views
 urlpatterns = [
     path('', views.index),
     path('admin/', admin.site.urls),
+    path('tournament/<str:tournament_id>', views.tournament),
+    path('tournaments/', views.tournaments_list)
 ]

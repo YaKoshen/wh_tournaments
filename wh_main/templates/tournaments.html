@@ -1,0 +1,32 @@
+{% extends 'main.html' %}
+
+{% block title %} WH Tournaments {% endblock %}
+
+{% block content_title %} Tournaments {% endblock %}
+
+{% block content %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Дата</th>
+                <th scope="col">Название</th>
+                <th scope="col">Очки</th>
+                <th scope="col">Ссылка на турнир</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tour in tournaments %}
+            <tr>
+                <td>{{ tour.date }}</th>
+                <td><a href='/tournament/{{ tour.id }}'>{{ tour.name }}</a></td>
+                <td>{{ tour.points }}</td>
+                <td><a href={{ tour.link }}>{{ tour.link }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

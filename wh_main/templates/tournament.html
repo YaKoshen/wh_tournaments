@@ -1,0 +1,45 @@
+{% extends 'main.html' %}
+
+{% block title %} WH Tournaments {% endblock %}
+
+{% block content_title %} {{ tournament.name }} {% endblock %}
+
+{% block content %}
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Игроки</a>
+        </li>
+        {% for value in tours %}
+        <li class="nav-item">
+            <a class="nav-link" id="tour-{{ value }}-tab" data-toggle="tab" href="#tour-{{ value }}" role="tab" aria-controls="tour-{{ value }}" aria-selected="false">Тур {{ value }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="players-list">
+                <ul class="list-group">
+                    {% for player in tournament.players.all %}
+                        <li class="list-group-item">[{{ player.raiting }}] {{ player.nick }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% for value in tours %}
+        <div class="tab-pane" id="tour-{{ value }}" role="tabpanel" aria-labelledby="tour-{{ value }}-tab">
+            Тур {{ value }}
+        </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+    $(function () {
+        $('#myTab li:last-child a').tab('show')
+    })
+</script>
+{% endblock %}
