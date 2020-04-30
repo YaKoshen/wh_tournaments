@@ -1,16 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from .models import Tournament, Player
 
 def index(request):
     return render(request, 'index.html')
 
+def index_redirect(request):
+    return redirect('/tournaments/')
+
 def tournament(request, tournament_id):
     tournament_obj = Tournament.objects.get(id=int(tournament_id))
     players = tournament_obj.players.order_by('-raiting').all()
-    print(tournament_obj.get_first_parings())
+    parings = [tournament_obj.get_first_parings(), ]
+    for tour in range(tournament_obj.tours - 1):
+        parings.append(None)
 
-    return render(request, 'tournament.html', {'tournament': tournament_obj, 'tours': range(1, int(tournament_obj.tours)+1), 'players': players})
+    return render(request, 'tournament.html', {'tournament': tournament_obj, 'tours': range(1, int(tournament_obj.tours)+1), 'players': players, 'parings': parings})
 
 def tournaments_list(request):
     return render(request, 'tournaments_list.html', {'tournaments': Tournament.objects.all()})

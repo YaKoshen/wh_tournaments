@@ -22,20 +22,26 @@
 
     <div class="tab-content">
         <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
-            <table class="table">
+            <table class="table" id="players-table">
                 <thead>
                     <tr>
                         <th scope="col">Место</th>
                         <th scope="col">Ник</th>
+                        <th scope="col">Имя</th>
+                        <th scope="col">Фамилия</th>
                         <th scope="col">Рэйтинг</th>
+                        <th scope="col">Зарегистрирован</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for player in players %}
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
-                        <td><a href='/player/{{ player.nick }}'>{{ player.nick }}</a></td>
-                        <td>{{ player.raiting }}</td>
+                        <td class="player-nick"><a href='/player/{{ player.nick }}'>{{ player.nick }}</a></td>
+                        <td>{{ player.first_name }}</td>
+                        <td>{{ player.last_name }}</td>
+                        <td class="player-raiting">{{ player.raiting }}</td>
+                        <td>✔ ✖</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -44,7 +50,76 @@
 
         {% for value in tours %}
         <div class="tab-pane" id="tour-{{ value }}" role="tabpanel" aria-labelledby="tour-{{ value }}-tab">
-            <button id="create-paring-{{ value }}" type="button" class="btn btn-outline-primary">Создать паринг</button>
+            <div id="accordion">
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Паринги
+                        </button>
+                    </h5>
+                    </div>
+                    <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Стол</th>
+                                        <th scope="col">Игрок 1</th>
+                                        <th scope="col">ПО</th>
+                                        <th scope="col">Игрок 2</th>
+                                        <th scope="col">ПО</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="paring-body-{{ value }}">
+
+                                </tbody>
+                            </table>
+
+                            <button id="create-paring-{{ value }}" type="button" class="btn btn-outline-primary">Создать паринг</button>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Результаты
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Место</th>
+                                        <th scope="col">Ник</th>
+                                        <th scope="col">Имя</th>
+                                        <th scope="col">Фамилия</th>
+                                        <th scope="col">ПО</th>
+                                        <th scope="col">ТО</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for player in players %}
+                                    <tr>
+                                        <th scope="row">{{ forloop.counter }}</th>
+                                        <td><a href='/player/{{ player.nick }}'>{{ player.nick }}</a></td>
+                                        <td>{{ player.first_name }}</td>
+                                        <td>{{ player.last_name }}</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         {% endfor %}
 
@@ -62,7 +137,45 @@
     })
 
     $(document).ready(function() {
-       $('#home-tab').click()
+        $('#home-tab').click()
+        var players_list = []
+        var parings_list = []
+
+        // Get list of players
+        $('#players-table tbody tr').each(function(i, player_el){
+            players_list[i] = [
+                $(this).find('.player-nick a')[0].text,
+                parseInt($(this).find('.player-raiting')[0].textContent)
+            ]
+        })
+        var players_count = parings_list.length
+
+        $('#create-paring-1').click(function() {
+            console.log('Creating paring...')
+
+            let group_count = 2;
+            if (players_list % 4 == 0) {
+                group_count = 4;
+            }
+
+            let groups = []
+            let group_size = Math.floor(players_count / group_count)
+            for (let i = 0; i < group_size; i += group_size) {
+                console.log(players.slice(i, (i + group_size)))
+                groups[i] = players.slice(i, (i + group_size))
+            }
+
+            let parings = []
+            let half_group_size = Math.floor(players_count / 2)
+            let parring_num = 1
+            for (let i = 0; i < half_group_size; i++) {
+                for (let j = 0; j < group_size; j++) {
+                    console.log('Pairing >>')
+                    console.log(groups[i][j], groups[i + half_group_size][j])
+                    parings[parring_num++] = [groups[i][j], groups[i + half_group_size][j]]
+                }
+            }
+        })
     })
 </script>
 {% endblock %}
